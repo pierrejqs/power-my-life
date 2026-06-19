@@ -1,6 +1,28 @@
 # Power My Life
 
-Next.js 15 game prototype for the Defend Intelligence hackathon.
+Next.js 15 game prototype for the Defend Intelligence hackathon. The game puts players in charge of a home energy system: buy equipment, react to events, and balance comfort, autonomy, budget, and CO2 impact across the week.
+
+## Demo
+
+<video src="public/demo-preview.mp4" controls muted width="100%"></video>
+
+[Open the demo preview](public/demo-preview.mp4)
+
+## Local Development
+
+Requirements:
+
+- Node.js 22
+- npm
+
+Run the app locally:
+
+1. Install dependencies:
+   `npm ci`
+2. Start the development server:
+   `npm run dev`
+3. Open:
+   `http://localhost:3000`
 
 ## Coolify Deployment
 
@@ -50,7 +72,11 @@ The container listens on port `3000` internally and maps to `3001` locally in th
 
 ## Verification
 
+Local checks:
+
 - `npm run type-check`
 - `npm run test:run`
 - `npm run lint`
 - `npm run build`
+
+The GitHub Actions CI workflow runs `type-check`, `test:run`, and `build` on push and pull request.

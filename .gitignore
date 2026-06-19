@@ -38,6 +38,7 @@ yarn-error.log*
 
 # local scaffold leftovers
 /power-my-life
+resources/
 /.npm-cache
 
 # typescript
