@@ -8,8 +8,6 @@ Live app: https://power-my-life.vercel.app
 
 ![Power My Life demo preview](public/demo-preview.gif)
 
-[Open the full demo preview](public/demo-preview.mp4)
-
 ## Local Development
 
 Requirements:
