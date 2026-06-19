@@ -1,6 +1,6 @@
 # Power My Life
 
-Next.js 15 game prototype for the Defend Intelligence hackathon. The game puts players in charge of a home energy system: buy equipment, react to events, and balance comfort, autonomy, budget, and CO2 impact across the week.
+Next.js game prototype for the Defend Intelligence hackathon. The game puts players in charge of a home energy system: buy equipment, react to events, and balance comfort, autonomy, budget, and CO2 impact across the week.
 
 ## Demo
 
