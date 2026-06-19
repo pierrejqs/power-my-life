@@ -1,6 +1,6 @@
 "use client";
 
-import { useEffect } from "react";
+import { useEffect, useRef } from "react";
 
 import { NARRATOR_ONBOARDING } from "@/lib/data/narrator";
 import { useGameStore } from "@/store/gameStore";
@@ -10,8 +10,7 @@ const STEPS = [
     title: "Ton logement",
     key: "houseType" as const,
     options: [
-      { emoji: "🏢", label: "Studio", value: "studio", description: "Compact et contraint." },
-      { emoji: "🏘️", label: "Appartement", value: "appart", description: "Intermediaire et dense." },
+      { emoji: "🏢", label: "Appartement", value: "appart", description: "Intermediaire et dense." },
       { emoji: "🏡", label: "Maison", value: "maison", description: "Plus de surface, plus d'options." },
     ],
   },
@@ -36,6 +35,7 @@ const STEPS = [
 ];
 
 export function Onboarding() {
+  const advanceTimerRef = useRef<number | null>(null);
   const onboardingStep = useGameStore((state) => state.onboardingStep);
   const setOnboardingStep = useGameStore((state) => state.setOnboardingStep);
   const setProfile = useGameStore((state) => state.setProfile);
@@ -50,7 +50,37 @@ export function Onboarding() {
     }
   }, [onboardingStep, setNarrator]);
 
+  useEffect(() => {
+    return () => {
+      if (advanceTimerRef.current) {
+        window.clearTimeout(advanceTimerRef.current);
+      }
+    };
+  }, []);
+
+  function clearAdvanceTimer() {
+    if (advanceTimerRef.current) {
+      window.clearTimeout(advanceTimerRef.current);
+      advanceTimerRef.current = null;
+    }
+  }
+
+  function handleBack() {
+    clearAdvanceTimer();
+
+    const previousStep = Math.max(onboardingStep - 1, 0);
+    setOnboardingStep(previousStep);
+
+    if (previousStep === 0) {
+      setNarrator(NARRATOR_ONBOARDING.intro.text, NARRATOR_ONBOARDING.intro.tone);
+    }
+    if (previousStep === 1) {
+      setNarrator(NARRATOR_ONBOARDING.occupantsIntro.text, NARRATOR_ONBOARDING.occupantsIntro.tone);
+    }
+  }
+
   function handleSelect(value: string) {
+    clearAdvanceTimer();
     setProfile({ [step.key]: value });
 
     if (step.key === "houseType") {
@@ -67,8 +97,9 @@ export function Onboarding() {
     }
 
     if (onboardingStep < 2) {
-      window.setTimeout(() => {
+      advanceTimerRef.current = window.setTimeout(() => {
         const nextStep = onboardingStep + 1;
+        advanceTimerRef.current = null;
         setOnboardingStep(nextStep);
         if (nextStep === 1) {
           setNarrator(
@@ -93,20 +124,29 @@ export function Onboarding() {
   }
 
   return (
-    <div className="absolute inset-0 z-20 flex items-end justify-center bg-[rgba(24,17,39,0.18)] px-0 pt-12 md:items-center md:px-4 md:py-4">
-      <div className="panel hud-panel max-h-[72svh] w-full overflow-hidden rounded-t-[34px] rounded-b-none px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-4 md:max-h-none md:max-w-4xl md:rounded-[28px] md:p-6">
-        <div className="mx-auto mb-4 h-1.5 w-12 rounded-full bg-[#ddcfec] md:hidden" />
-        <div className="control-scroll max-h-[calc(72svh-2rem)] overflow-y-auto pr-1 md:max-h-none md:overflow-visible md:pr-0">
-          <div className="control-scroll flex gap-3 overflow-x-auto pb-2 md:grid md:gap-4 md:overflow-visible md:pb-0 md:grid-cols-3">
+    <div className="absolute inset-0 z-20 flex items-end justify-center bg-[rgba(24,17,39,0.08)] px-0 pt-12 md:px-4 md:py-4">
+      <div className="max-h-[44svh] w-full overflow-hidden px-4 pb-[calc(env(safe-area-inset-bottom)+1rem)] pt-4 md:max-h-[30svh] md:max-w-3xl md:p-4">
+        <div className="control-scroll max-h-[calc(44svh-2rem)] overflow-y-auto pr-1 md:max-h-[calc(30svh-2rem)] md:pr-0">
+          {onboardingStep > 0 && (
+            <button
+              type="button"
+              onClick={handleBack}
+              aria-label="Revenir a l'etape precedente"
+              className="panel hud-panel mb-3 flex h-11 w-11 items-center justify-center text-3xl font-bold leading-none text-[#2d2545] transition hover:-translate-x-0.5 hover:border-[#ffb2a4] hover:shadow-[0_12px_28px_rgba(255,107,107,0.16)]"
+            >
+              ‹
+            </button>
+          )}
+          <div className="control-scroll flex gap-3 overflow-x-auto pb-2 md:grid md:gap-3 md:overflow-visible md:pb-0 md:grid-cols-3">
             {step.options.map((option) => (
               <button
                 key={option.value}
                 type="button"
                 onClick={() => handleSelect(option.value)}
                 aria-label={`${step.title} : ${option.label}`}
-                className="panel hud-panel min-w-[15.5rem] flex-none p-5 text-left transition hover:-translate-y-1 hover:border-[#ffb2a4] hover:shadow-[0_16px_36px_rgba(255,107,107,0.18)] md:min-w-0"
+                className="panel hud-panel min-w-[10rem] flex-none p-4 text-left transition hover:-translate-y-1 hover:border-[#ffb2a4] hover:shadow-[0_16px_36px_rgba(255,107,107,0.18)] md:min-w-0"
               >
-                <div className="mb-4 text-4xl">{option.emoji}</div>
+                <div className="mb-3 text-3xl">{option.emoji}</div>
                 <div className="playful-display mb-1 text-xl font-bold text-[#2d2545]">
                   {option.label}
                 </div>

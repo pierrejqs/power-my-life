@@ -7,12 +7,7 @@ const nextConfig: NextConfig = {
     if (dev) {
       config.watchOptions = {
         ...config.watchOptions,
-        ignored: [
-          "**/.next/**",
-          "**/.npm-cache/**",
-          "**/node_modules/**",
-          "**/power-my-life/**",
-        ],
+        ignored: /(^|[/\\])(\.git|\.next|\.npm-cache|node_modules|power-my-life)([/\\]|$)/,
       };
     }
 

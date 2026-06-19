@@ -4,9 +4,9 @@ Next.js 15 game prototype for the Defend Intelligence hackathon. The game puts p
 
 ## Demo
 
-<video src="public/demo-preview.mp4" controls muted width="100%"></video>
+![Power My Life demo preview](public/demo-preview.gif)
 
-[Open the demo preview](public/demo-preview.mp4)
+[Open the full demo preview](public/demo-preview.mp4)
 
 ## Local Development
 
