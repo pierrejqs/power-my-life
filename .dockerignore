@@ -1,0 +1,14 @@
+.git
+.gitignore
+.next
+node_modules
+.npm-cache
+coverage
+*.log
+.DS_Store
+resources
+agents
+power-my-life
+.vercel
+.vercelignore
+vercel.json
