@@ -4,6 +4,8 @@ Next.js 15 game prototype for the Defend Intelligence hackathon. The game puts p
 
 ## Demo
 
+Live app: https://power-my-life.vercel.app
+
 ![Power My Life demo preview](public/demo-preview.gif)
 
 [Open the full demo preview](public/demo-preview.mp4)
